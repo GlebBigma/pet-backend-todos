@@ -10,9 +10,9 @@ const successMsg = chalk.bgKeyword('green').whiteBright;
 const app = express();
 
 mongoose
-  .connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.MONGO_URL)
   .then((res) => console.log(successMsg('Connected to DB')))
-  .catch((error) => console.log(errorMsg(error)));
+  .catch((error) => console.log(errorMsg(`Connection to DB error: ${error}`)));
 
 app.listen(process.env.PORT, 'localhost', (error) => {
   error ? console.log(errorMsg(error)) : console.log(successMsg(`Server started on port ${process.env.PORT}`));

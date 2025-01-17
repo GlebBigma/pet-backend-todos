@@ -1135,7 +1135,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb@npm:~6.12.0":
+"mongodb@npm:^6.12.0, mongodb@npm:~6.12.0":
   version: 6.12.0
   resolution: "mongodb@npm:6.12.0"
   dependencies:
@@ -1383,6 +1383,7 @@ __metadata:
     chalk: "npm:4.0.0"
     dotenv: "npm:^16.4.7"
     express: "npm:^4.21.2"
+    mongodb: "npm:^6.12.0"
     mongoose: "npm:^8.9.5"
     morgan: "npm:^1.10.0"
     nodemon: "npm:^3.1.9"
