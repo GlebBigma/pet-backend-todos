@@ -1,17 +1,21 @@
 const express = require('express');
 const morgan = require('morgan');
-const mongoose = require('mongoose');
 const chalk = require('chalk');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 const errorMsg = chalk.bgKeyword('white').redBright;
 const successMsg = chalk.bgKeyword('green').whiteBright;
 
-const PORT = 8080;
-
 const app = express();
 
-app.listen(PORT, 'localhost', (error) => {
-  error ? console.log(errorMsg(error)) : console.log(successMsg(`Server started on port ${PORT}`));
+mongoose
+  .connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then((res) => console.log(successMsg('Connected to DB')))
+  .catch((error) => console.log(errorMsg(error)));
+
+app.listen(process.env.PORT, 'localhost', (error) => {
+  error ? console.log(errorMsg(error)) : console.log(successMsg(`Server started on port ${process.env.PORT}`));
 });
 
 app.use(express.urlencoded({ extended: false }));
