@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const chalk = require('chalk');
 const mongoose = require('mongoose');
 require('dotenv').config();
+const Todo = require('./models/todo');
 
 const errorMsg = chalk.bgKeyword('white').redBright;
 const successMsg = chalk.bgKeyword('green').whiteBright;
