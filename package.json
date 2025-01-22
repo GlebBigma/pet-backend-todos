@@ -17,6 +17,7 @@
   },
   "packageManager": "yarn@4.4.1",
   "engines": {
-    "node": "22.13.0"
+    "node": ">=16.x",
+    "yarn": ">=1.22.x"
   }
 }
