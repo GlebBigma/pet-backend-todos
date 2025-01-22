@@ -34,6 +34,9 @@ COPY --link . .
 # Final stage for app image
 FROM base
 
+# Expose the port (Fly.io will use this port, or you can use `process.env.PORT` in your app)
+EXPOSE 8080
+
 # Copy built application from build stage
 COPY --from=build /app /app
 
