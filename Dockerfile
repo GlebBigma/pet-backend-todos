@@ -34,11 +34,11 @@ COPY --link . .
 # Final stage for app image
 FROM base
 
-# Expose the port (Fly.io will use this port, or you can use `process.env.PORT` in your app)
+# Expose the port that the app will run on (Fly.io typically uses 8080)
 EXPOSE 8080
 
-# Copy built application from build stage
+# Copy the built application from the build stage
 COPY --from=build /app /app
 
-# Start the server by default, this can be overwritten at runtime
-CMD [ "yarn", "run", "start" ]
+# Set the command to start the server, using the start script from package.json
+CMD ["yarn", "start"]
