@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const chalk = require('chalk');
 const mongoose = require('mongoose');
 require('dotenv').config();
-const Todo = require('./models/todo');
+const todoRoutes = require('./routes/todo-routes');
 
 const errorMsg = chalk.bgKeyword('white').redBright;
 const successMsg = chalk.bgKeyword('green').whiteBright;
@@ -22,3 +22,5 @@ app.listen(process.env.PORT, 'localhost', (error) => {
 app.use(express.urlencoded({ extended: false }));
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
+
+app.use(todoRoutes);
