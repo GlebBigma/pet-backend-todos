@@ -2,7 +2,7 @@
 
 # Adjust NODE_VERSION as desired
 ARG NODE_VERSION=22.13.0
-FROM node:${NODE_VERSION}-slim as base
+FROM node:${NODE_VERSION}-slim AS base
 
 LABEL fly_launch_runtime="NodeJS"
 
@@ -16,29 +16,33 @@ ENV NODE_ENV=production
 RUN corepack enable && corepack prepare yarn@4.4.1 --activate
 
 # Throw-away build stage to reduce size of final image
-FROM base as build
+FROM base AS build
 
 # Install packages needed to build node modules
 RUN apt-get update -qq && \
     apt-get install -y python-is-python3 pkg-config build-essential
 
-# Copy package.json and yarn.lock before installing dependencies to take advantage of Docker cache
-COPY --link package.json yarn.lock ./
+# Copy package.json and yarn.lock before installing dependencies to use Docker cache efficiently
+COPY package.json yarn.lock ./
 
 # Install all dependencies (dev and prod)
 RUN yarn install
 
-# Copy application code
-COPY --link . .
+# Copy the rest of the application code after dependencies are installed
+COPY . .
 
 # Final stage for app image
 FROM base
 
-# Expose the port that the app will run on (Fly.io typically uses 8080)
+# Expose the port for the application
 EXPOSE 8080
 
-# Copy the built application from the build stage
+# Copy dependencies and application code from build stage
 COPY --from=build /app /app
 
-# Set the command to start the server, using the start script from package.json
-CMD ["yarn", "start"]
+# Make sure dependencies are installed in the final image
+WORKDIR /app
+RUN yarn install
+
+# Start the server using 'yarn run dev'
+CMD ["yarn", "run", "dev"]
