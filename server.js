@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 const chalk = require('chalk');
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -26,5 +27,6 @@ app.listen(port, '0.0.0.0', (error) => {
 
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
+app.use(cors());
 
 app.use(todoRoutes);
