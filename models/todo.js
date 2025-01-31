@@ -9,6 +9,10 @@ const todoSchema = new Schema({
   message: {
     type: String,
     required: true,
+  },
+  completed: {
+    type: Boolean,
+    required: true,
   }
 }, { timestamps: true });
 

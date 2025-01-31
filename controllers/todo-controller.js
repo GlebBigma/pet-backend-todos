@@ -13,8 +13,8 @@ const getTodos = (req, res) => {
 }
 
 const addTodo = (req, res) => {
-  const { title, message } = req.body;
-  const todo = new Todo({ title, message });
+  const { title, message, completed } = req.body;
+  const todo = new Todo({ title, message, completed });
   todo
     .save()
     .then((todo) => res.status(200).json(todo))
@@ -37,10 +37,10 @@ const deleteTodo = (req, res) => {
 }
 
 const editTodo = (req, res) => {
-  const { title, message } = req.body;
+  const { title, message, completed } = req.body;
   const { id } = req.params;
   Todo
-    .findByIdAndUpdate(id, { title, message }, { new: true })
+    .findByIdAndUpdate(id, { title, message, completed }, { new: true })
     .then((todo) => res.json(todo))
     .catch((error) => handleError(res, error));
 }
