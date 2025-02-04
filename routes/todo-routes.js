@@ -9,10 +9,10 @@ const {
 
 const router = express.Router();
 
-router.get('/api/todos', getTodos);
-router.post('/api/todo/', addTodo);
-router.get('/api/todo/:id', getTodo);
-router.delete('/api/todo/:id', deleteTodo);
-router.put('/api/todo/:id', editTodo);
+router.get('/todos', getTodos);
+router.post('/todo/', addTodo);
+router.get('/todo/:id', getTodo);
+router.delete('/todo/:id', deleteTodo);
+router.put('/todo/:id', editTodo);
 
 module.exports = router;

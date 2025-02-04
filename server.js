@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const chalk = require('chalk');
 const mongoose = require('mongoose');
-require('dotenv').config();
+const config = require('./config');
 const todoRoutes = require('./routes/todo-routes');
 
 const errorMsg = chalk.bgKeyword('white').redBright;
@@ -12,21 +12,33 @@ const successMsg = chalk.bgKeyword('green').whiteBright;
 const app = express();
 
 mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => console.log(successMsg('Connected to DB')))
-  .catch((error) => console.log(errorMsg(`Connection to DB error: ${error}`)));
+  .connect(config.mongoURL)
+  .then(() => console.log(successMsg('✅ Connected to DB')))
+  .catch((error) => {
+    console.error(errorMsg(`❌ Connection to DB error: ${error.message}`));
+    process.exit(1);
+  });
 
-const port = process.env.PORT || 8080;
-app.listen(port, '0.0.0.0', (error) => {
-  if (error) {
-    console.log(errorMsg(error));
-  } else {
-    console.log(successMsg(`Server started on port ${port}`));
-  }
-});
-
+app.use(cors());
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
-app.use(cors());
 
-app.use(todoRoutes);
+app.use('/api', todoRoutes);
+
+app.use((req, res, next) => {
+  res.status(404).json({ error: 'Not Found' });
+});
+
+app.use((err, req, res, next) => {
+  console.error(errorMsg(`❌ Server error: ${err.message}`));
+  res.status(500).json({ error: 'Internal Server Error' });
+});
+
+app.listen(config.port, config.hostname, (error) => {
+  if (error) {
+    console.error(errorMsg(error));
+  } else {
+    console.log(successMsg(`🚀 Server started on ${config.hostname}:${config.port} in ${config.env} mode`));
+  }
+});
